@@ -463,5 +463,17 @@ namespace Mono.Cecil.Tests {
 
 			Assert.AreEqual ("temp", method.DebugInformation.Scope.Variables [0].Name);
 		}
+
+		[Test]
+		public void IkvmDllSymbolsMatch()
+		{
+			TestModule ("ikvm-test.dll", module => {
+				var type = module.GetType ("com.test.TestClass");
+				var method = type.GetMethod ("Foo");
+				Assert.NotNull (type);
+				Assert.NotNull (method);
+
+			}, readOnly: !Platform.HasNativePdbSupport, symbolReaderProvider: typeof (PdbReaderProvider), symbolWriterProvider: typeof (PdbWriterProvider));
+		}
 	}
 }
